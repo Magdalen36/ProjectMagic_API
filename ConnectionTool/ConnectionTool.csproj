@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectMagic_API\ProjectMagic_API.csproj" />
+    <ProjectReference Include="..\ProjectMagic_DAL\ProjectMagic_DAL.sqlproj" />
+    <ProjectReference Include="..\ProjectMagic_Model\ProjectMagic_Models.csproj" />
+    <ProjectReference Include="..\ProjectMagic_Services\ProjectMagic_Services.csproj" />
+  </ItemGroup>
+
+</Project>
