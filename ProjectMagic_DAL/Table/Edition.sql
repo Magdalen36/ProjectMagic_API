@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Edition]
+(
+	[Id] INT NOT NULL IDENTITY,
+	[DesignEdition] VARCHAR(MAX) NULL ,
+	[NbMax] INT NOT NULL DEFAULT 0,
+	[Name] VARCHAR(50) NOT NULL, 
+    CONSTRAINT [PK_Edition] PRIMARY KEY ([Id])
+)
