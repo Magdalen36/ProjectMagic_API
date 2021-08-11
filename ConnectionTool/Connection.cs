@@ -12,33 +12,52 @@ namespace ConnectionTool
     {
         private string _connectionString;
 
-        public string ConnectionString
+        public Connection(string connexionString)
         {
-            get
+            _connectionString = connexionString;
+            using (SqlConnection connection = CreateConnection())
             {
-                return _connectionString;
+                connection.Open();
             }
         }
 
-        public Connection(string connectionString)
+        private SqlConnection CreateConnection()
         {
-            _connectionString = connectionString;
-            using (SqlConnection connection = CreateConnection())
-            {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _connectionString;
 
-                connection.Open();
-            }
+            return connection;
         }
 
         public object ExecuteScalar(Command command)
         {
             using (SqlConnection connection = CreateConnection())
             {
-                using (SqlCommand cmd = CreateCommand(command, connection))
+                using (SqlCommand sqlCommand = CreateCommand(command, connection))
                 {
                     connection.Open();
-                    object result = cmd.ExecuteScalar();
+                    object result = sqlCommand.ExecuteScalar();
+
                     return (result is DBNull) ? null : result;
+                }
+            }
+        }
+
+        public IEnumerable<TResult> ExecuteReader<TResult>(Command command, Func<IDataReader, TResult> selector)
+        {
+            using (SqlConnection connection = CreateConnection())
+            {
+                using (SqlCommand sqlCommand = CreateCommand(command, connection))
+                {
+                    connection.Open();
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            yield return selector(dataReader);
+                        }
+                    }
+
                 }
             }
         }
@@ -47,75 +66,32 @@ namespace ConnectionTool
         {
             using (SqlConnection connection = CreateConnection())
             {
-                using (SqlCommand cmd = CreateCommand(command, connection))
+                using (SqlCommand sqlCommand = CreateCommand(command, connection))
                 {
                     connection.Open();
-                    return cmd.ExecuteNonQuery();
+                    return sqlCommand.ExecuteNonQuery();
                 }
             }
         }
 
-        public DataTable GetDataTable(Command command)
-        {
-            using (SqlConnection connection = CreateConnection())
-            {
-                using (SqlCommand cmd = CreateCommand(command, connection))
-                {
-                    using (SqlDataAdapter da = new SqlDataAdapter())
-                    {
-                        da.SelectCommand = cmd;
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        return dt;
-                    }
-                }
-            }
-        }
-
-        public IEnumerable<TResult> ExecuteReader<TResult>(Command command, Func<IDataRecord, TResult> selector)
-        {
-            List<TResult> results = new List<TResult>();
-            using (SqlConnection connection = CreateConnection())
-            {
-                using (SqlCommand cmd = CreateCommand(command, connection))
-                {
-                    connection.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            yield return selector(reader);
-                        }
-                    }
-                }
-            }
-        }
 
 
         private SqlCommand CreateCommand(Command command, SqlConnection connection)
         {
-            SqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = command.Query;
-            if (command.Stored)
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-            }
-            foreach (KeyValuePair<string, object> kvp in command.Params)
+            SqlCommand sqlCommand = connection.CreateCommand();
+            sqlCommand.CommandText = command.Query;
+
+            if (command.IsStoredProcedure)
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+            foreach (KeyValuePair<string, object> kvp in command.Parameters)
             {
                 SqlParameter parameter = new SqlParameter();
                 parameter.ParameterName = kvp.Key;
                 parameter.Value = kvp.Value;
 
-                cmd.Parameters.Add(parameter);
+                sqlCommand.Parameters.Add(parameter);
             }
-            return cmd;
-        }
-
-        private SqlConnection CreateConnection()
-        {
-            SqlConnection sqlConnection = new SqlConnection();
-            sqlConnection.ConnectionString = ConnectionString;
-            return sqlConnection;
+            return sqlCommand;
         }
     }
 }

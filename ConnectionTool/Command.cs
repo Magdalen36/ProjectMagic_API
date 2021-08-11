@@ -8,58 +8,20 @@ namespace ConnectionTool
 {
     public class Command
     {
-        private Dictionary<string, object> _params;
-        private bool _stored;
-        private string _query;
+        public string Query { get; set; }
+        public bool IsStoredProcedure { get; set; }
+        public Dictionary<string, object> Parameters { get; set; }
 
-        public Command(string query, bool isStoredProcedure = false)
+        public Command(string query, bool isStoredProcedure)
         {
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                throw new ArgumentNullException("Query can't be null");
-            }
-            _query = query;
-            _stored = isStoredProcedure;
-            _params = new Dictionary<string, object>();
+            Query = query;
+            IsStoredProcedure = isStoredProcedure;
+            Parameters = new Dictionary<string, object>();
         }
 
-        public Dictionary<string, object> Params
+        public void AddParameters(string parameterName, object value)
         {
-            get
-            {
-                return _params;
-            }
-        }
-
-        public bool Stored
-        {
-            get
-            {
-                return _stored;
-            }
-        }
-
-        public string Query
-        {
-            get
-            {
-                return _query;
-            }
-
-        }
-
-        public void AddParameter(string parameterName, object value)
-        {
-            if (parameterName == null || parameterName.Trim().Length == 0)
-            {
-                throw new ArgumentNullException("Parameter can't be null");
-            }
-
-            if (_params.ContainsKey(parameterName))
-            {
-                throw new MissingMemberException("Parameter {0} already exist", parameterName);
-            }
-            _params.Add(parameterName, value ?? DBNull.Value);
+            Parameters.Add(parameterName, value ?? DBNull.Value);
         }
     }
 }
