@@ -38,6 +38,7 @@ namespace test
 
             //services.AddScoped<IService<EditionModel>, EditionService>();
             services.AddScoped<EditionService>();
+            services.AddScoped<CardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

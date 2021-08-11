@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProjectMagic_Model;
+using ProjectMagic_Models;
 using ProjectMagic_Services;
 using System;
 using System.Collections.Generic;
@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 
 namespace ProjectMagic_API.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
-    public class EditionController : ControllerBase
+    [ApiController]
+    public class CardController : ControllerBase
     {
-        private EditionService _editionService;
 
-        public EditionController(EditionService editionService)
+        private CardService _cardService;
+
+        public CardController(CardService cardService)
         {
-            _editionService = editionService;
+            _cardService = cardService;
         }
-
 
         [HttpGet]
         public ActionResult GetAll()
         {
             try
             {
-                return Ok(_editionService.GetAll());
+                return Ok(_cardService.GetAll());
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                         new { Method = "Get", Message = ex.Message });
-            }       
+            }
         }
 
         [HttpGet("{id}")]
@@ -40,7 +40,7 @@ namespace ProjectMagic_API.Controllers
         {
             try
             {
-                EditionModel result = _editionService.GetById(id);
+                CardModel result = _cardService.GetById(id);
                 if (result is null) return NotFound();
                 else return Ok(result);
             }
@@ -52,12 +52,12 @@ namespace ProjectMagic_API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] EditionModel edition)
-        {          
+        public ActionResult Post([FromBody] CardModel edition)
+        {
             try
             {
                 if (edition is null) return BadRequest();
-                return Ok(_editionService.Insert(edition));
+                return Ok(_cardService.Insert(edition));
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace ProjectMagic_API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, [FromBody] EditionModel edition)
+        public ActionResult Put(int id, [FromBody] CardModel edition)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace ProjectMagic_API.Controllers
                 if (id != edition.Id) return BadRequest();
 
                 edition.Id = id;
-                _editionService.Update(edition, id);
+                _cardService.Update(edition, id);
                 return Ok();
             }
             catch (Exception ex)
@@ -90,7 +90,7 @@ namespace ProjectMagic_API.Controllers
         {
             try
             {
-                return Ok(_editionService.Delete(id));
+                return Ok(_cardService.Delete(id));
             }
             catch (Exception ex)
             {
@@ -101,14 +101,14 @@ namespace ProjectMagic_API.Controllers
         }
 
         [HttpGet("[action]")]
-        public ActionResult<IEnumerable<EditionModel>> SearchByName(string name)
+        public ActionResult<IEnumerable<CardModel>> SearchByName(string name)
         {
             try
             {
-                IEnumerable<EditionModel> editions = _editionService.SearchByName(name);
-                if (editions is null || editions.Count() == 0) return NotFound();
+                IEnumerable<CardModel> cards = _cardService.SearchByName(name);
+                if (cards is null || cards.Count() == 0) return NotFound();
 
-                return Ok(editions);
+                return Ok(cards);
             }
             catch (Exception ex)
             {
@@ -118,6 +118,22 @@ namespace ProjectMagic_API.Controllers
             }
         }
 
-        
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<CardModel>> SearchByColor(int color)
+        {
+            try
+            {
+                IEnumerable<CardModel> cards = _cardService.SearchByColor(color);
+                if (cards is null || cards.Count() == 0) return NotFound();
+
+                return Ok(cards);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        new { Method = nameof(SearchByName), Message = ex.Message });
+            }
+        }
     }
 }

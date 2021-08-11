@@ -11,7 +11,7 @@
     [TypeCardId] INT NOT NULL, 
     [SousTypeCardId] INT NULL, 
     [Cost] VARCHAR(50) NULL, 
-    [ColorId] INT NOT NULL, 
+    [ColorId] INT NULL, 
     CONSTRAINT [PK_Card] PRIMARY KEY ([Id]), 
     CONSTRAINT [FK_Card_To_Edition] FOREIGN KEY ([EditionId]) REFERENCES [Edition]([Id]), 
     CONSTRAINT [FK_Card_To_TypeCard] FOREIGN KEY ([TypeCardId]) REFERENCES [TypeCard]([Id]), 

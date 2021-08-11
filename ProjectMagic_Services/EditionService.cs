@@ -51,5 +51,12 @@ namespace ProjectMagic_Services
             cmd.AddParameters("id", id);
             _connection.ExecuteNonQuery(cmd);
         }
+
+        public IEnumerable<EditionModel> SearchByName(string name)
+        {
+            Command cmd = new Command("SELECT * FROM Edition WHERE[name] LIKE @name ORDER BY [name]", false);
+            cmd.AddParameters("name", "%" + name + "%");
+            return _connection.ExecuteReader(cmd, EditionMapper.Convert);
+        }
     }
 }
