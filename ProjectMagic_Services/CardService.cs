@@ -37,6 +37,7 @@ namespace ProjectMagic_Services
             return _connection.ExecuteReader(cmd, CardMapper.Convert).FirstOrDefault();
         }
 
+
         public int Insert(CardModel entity)
         {
             Command cmd = new Command("INSERT INTO Card (name, cost, PS, Premium, Description, EditionId, RarityId, TypeCardId, SousTypeCardId, ColorId) " +
@@ -83,6 +84,14 @@ namespace ProjectMagic_Services
         {
             Command cmd = new Command("SELECT * FROM CardView WHERE[colorId] = @colorId ORDER BY [cardname]", false);
             cmd.AddParameters("colorId", color);
+            return _connection.ExecuteReader(cmd, CardMapper.Convert);
+        }
+
+
+        public IEnumerable<CardModel> SearchByEditionId(int id)
+        {
+            Command cmd = new Command("SELECT * FROM[CardView] WHERE[EditionId] = @id", false);
+            cmd.AddParameters("Id", id);
             return _connection.ExecuteReader(cmd, CardMapper.Convert);
         }
     }

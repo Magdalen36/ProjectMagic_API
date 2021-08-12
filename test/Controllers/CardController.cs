@@ -135,5 +135,23 @@ namespace ProjectMagic_API.Controllers
                         new { Method = nameof(SearchByName), Message = ex.Message });
             }
         }
+
+        [HttpGet("[action]/{id}")]
+        public ActionResult<IEnumerable<CardModel>> SearchByEditionId(int id)
+        {
+            try
+            {
+                IEnumerable<CardModel> cards = _cardService.SearchByEditionId(id);
+                if (cards is null || cards.Count() == 0) return NotFound();
+
+                return Ok(cards);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        new { Method = nameof(SearchByName), Message = ex.Message });
+            }
+        }
     }
 }
