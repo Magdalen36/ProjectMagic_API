@@ -100,7 +100,7 @@ namespace ProjectMagic_API.Controllers
             }
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]/{name}")]
         public ActionResult<IEnumerable<EditionModel>> SearchByName(string name)
         {
             try
