@@ -17,7 +17,6 @@ namespace ProjectMagic_Services
         //pas d'interface IService ici
         //incompatible avec le double profil (public et privé)
 
-
         public UserService(IConfiguration config): base(config)
         {
 
