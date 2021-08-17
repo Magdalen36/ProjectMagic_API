@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectMagic_Model\ProjectMagic_Models.csproj" />
     <ProjectReference Include="..\ProjectMagic_Services\ProjectMagic_Services.csproj" />
   </ItemGroup>
 

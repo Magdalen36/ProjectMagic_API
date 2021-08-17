@@ -73,6 +73,7 @@ namespace ProjectMagic_Services
             _connection.ExecuteScalar(cmd);
         }
 
+
         public IEnumerable<CardModel> SearchByName(string name)
         {
             Command cmd = new Command("SELECT * FROM CardView WHERE[cardname] LIKE @cardname ORDER BY [cardname]", false);
