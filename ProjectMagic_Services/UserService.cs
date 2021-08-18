@@ -23,7 +23,6 @@ namespace ProjectMagic_Services
         }
 
         //Permet de passer d'un modele de user à l'autre pour l'affichage (pas d'affichage public de password)
-        //Redondant avec la classe UserMapper
         private Func<UserModel, UserPublicModel> mapping = (pro) =>
         {
             if (pro is null) return null;
@@ -38,6 +37,18 @@ namespace ProjectMagic_Services
                 RoleId = pro.RoleId
             };
         };
+
+        public UserPublicModel Check(string email, string password)
+        {
+            Command cmd = new Command("LoginUser", true);
+            cmd.AddParameters("email", email);
+            cmd.AddParameters("password", password);
+            UserModel user = new UserModel();
+            user = _connection.ExecuteReader(cmd, UserMapper.ConvertBack).FirstOrDefault();
+
+            if (user == null) return null;
+            else return mapping(user);
+        }
 
         public bool Delete(int id)
         {
@@ -61,18 +72,14 @@ namespace ProjectMagic_Services
 
         public int Insert(UserModel entity)
         {
-            Command cmd = new Command("INSERT INTO [User] (FirstName, LastName, Email, Password, BirthDate, RoleId, Salt) output inserted.id VALUES (@firstname, @lastname, @email, @password, @birthdate, @roleid, @salt)", false);
+            Command cmd = new Command("RegisterUser", true);
             cmd.AddParameters("firstname", entity.FirstName);
             cmd.AddParameters("lastname", entity.LastName);
             cmd.AddParameters("email", entity.Email);
-            cmd.AddParameters("birthdate", entity.BirthDate.ToString("yyyy-MM-dd"));
+            cmd.AddParameters("birthdate", entity.BirthDate);
             cmd.AddParameters("roleid", 2);
-
-            string tempSalt = Guid.NewGuid().ToString();
-            cmd.AddParameters("salt", tempSalt);
-            cmd.AddParameters("password", PasswordHasher.Hashing((entity.Password).ToString(), tempSalt));
+            cmd.AddParameters("password",entity.Password);
            
-
             return (int)_connection.ExecuteScalar(cmd);
         }
 

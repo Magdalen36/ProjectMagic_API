@@ -24,5 +24,20 @@ namespace ProjectMagic_Services.Mapper
                 RoleId = (int)reader["RoleId"]
             };
         }
+
+        internal static UserModel ConvertBack(IDataReader reader)
+        {
+            return new UserModel
+            {
+                Id = (int)reader["Id"],
+                FirstName = reader["FirstName"].ToString(),
+                LastName = reader["LastName"].ToString(),
+                Email = reader["Email"].ToString(),
+                BirthDate = (DateTime)reader["BirthDate"],
+                RoleId = (int)reader["RoleId"],
+                Password = (byte[])reader["Password"],
+                Salt = reader["Salt"].ToString()
+            };
+        }
     }
 }

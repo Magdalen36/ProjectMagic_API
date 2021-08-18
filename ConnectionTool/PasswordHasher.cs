@@ -17,8 +17,7 @@ namespace ConnectionTool
         }
 
         public static byte[] Hashing(string password, string salt)
-        {
-       
+        {      
             string result = salt.Substring(0, salt.Length / 2) + password + salt.Substring(salt.Length / 2);
             using (SHA256 sha256 = SHA256.Create())
             {

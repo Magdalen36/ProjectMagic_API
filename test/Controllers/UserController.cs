@@ -20,6 +20,27 @@ namespace ProjectMagic_API.Controllers
             _userService = userService;
         }
 
+
+        [HttpPost("[action]")]
+        public ActionResult<UserPublicModel> Login(string email, string password)
+        {
+            try
+            {
+                UserPublicModel user = _userService.Check(email, password);
+                if(user is null) return StatusCode(StatusCodes.Status401Unauthorized, "L'email et le mot de passe ne correspondent à aucun profil.");
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Method = nameof(Login),
+                    Message = ex.Message
+                });
+            }
+        }
+
+
         [HttpPost]
         public ActionResult Post([FromBody] UserModel user)
         {
