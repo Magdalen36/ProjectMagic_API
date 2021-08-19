@@ -58,6 +58,7 @@
     <Folder Include="Script" />
     <Folder Include="StoredProc" />
     <Folder Include="Functions" />
+    <Folder Include="View" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Table\Edition.sql" />
@@ -74,6 +75,8 @@
     <Build Include="StoredProc\RegisterUser.sql" />
     <Build Include="Functions\GetSecretKey.sql" />
     <Build Include="StoredProc\LoginUser.sql" />
+    <Build Include="View\CardView.sql" />
+    <Build Include="View\CollectionView.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script\InsertData.sql" />

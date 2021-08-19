@@ -55,7 +55,6 @@ namespace ProjectMagic_Services
             return (int)_connection.ExecuteScalar(cmd);
         }
 
-        //Non fonctionnelle : me dit que ca foire avec la foreign key edition
         public void Update(CardModel entity, int id)
         {
             Command cmd = new Command("UPDATE Card Set name=@name, cost=@cost, PS=@PS, Premium=@premium, Description=@description, EditionId=@EditionId, RarityId=@RarityId, TypeCardId=@TypeCardId, SousTypeCardId=@SousTypeCardId, ColorId=@ColorId WHERE id=@id", false);
