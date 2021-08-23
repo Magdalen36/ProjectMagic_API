@@ -38,7 +38,19 @@ namespace ProjectMagic_Services
             };
         };
 
-        public UserPublicModel Check(string email, string password)
+        //public UserPublicModel Check(string email, string password)
+        //{
+        //    Command cmd = new Command("LoginUser", true);
+        //    cmd.AddParameters("email", email);
+        //    cmd.AddParameters("password", password);
+        //    UserModel user = new UserModel();
+        //    user = _connection.ExecuteReader(cmd, UserMapper.ConvertBack).FirstOrDefault();
+
+        //    if (user == null) return null;
+        //    else return mapping(user);
+        //}
+
+        public int Check(string email, string password)
         {
             Command cmd = new Command("LoginUser", true);
             cmd.AddParameters("email", email);
@@ -46,8 +58,8 @@ namespace ProjectMagic_Services
             UserModel user = new UserModel();
             user = _connection.ExecuteReader(cmd, UserMapper.ConvertBack).FirstOrDefault();
 
-            if (user == null) return null;
-            else return mapping(user);
+            if (user == null) return 0;
+            else return user.Id;
         }
 
         public bool Delete(int id)
