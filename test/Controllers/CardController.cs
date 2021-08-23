@@ -35,6 +35,20 @@ namespace ProjectMagic_API.Controllers
             }
         }
 
+        [HttpGet("[Action]/{nbr}")]
+        public ActionResult GetRandom(int nbr)
+        {
+            try
+            {
+                return Ok(_cardService.GetRandom(nbr));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        new { Method = "Get", Message = ex.Message });
+            }
+        }
+
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {

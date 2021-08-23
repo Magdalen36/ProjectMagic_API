@@ -35,7 +35,7 @@ namespace ProjectMagic_Services.Mapper
                 Email = reader["Email"].ToString(),
                 BirthDate = (DateTime)reader["BirthDate"],
                 RoleId = (int)reader["RoleId"],
-                Password = (byte[])reader["Password"],
+                Password = reader["Password"].ToString(),
                 Salt = reader["Salt"].ToString()
             };
         }

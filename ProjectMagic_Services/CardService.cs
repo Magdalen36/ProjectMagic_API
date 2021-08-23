@@ -30,6 +30,13 @@ namespace ProjectMagic_Services
             return _connection.ExecuteReader(cmd, CardMapper.Convert);
         }
 
+        public IEnumerable<CardModel> GetRandom(int nbr)
+        {
+            Command cmd = new Command("SELECT TOP (@nbr) * FROM CardView ORDER BY NEWID()", false);
+            cmd.AddParameters("nbr", nbr);
+            return _connection.ExecuteReader(cmd, CardMapper.Convert);
+        }
+
         public CardModel GetById(int id)
         {
             Command cmd = new Command("SELECT * FROM[CardView] WHERE[Id] = @id", false);

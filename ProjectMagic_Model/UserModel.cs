@@ -18,17 +18,18 @@ namespace ProjectMagic_Models
         [MaxLength(50)]
         public string LastName { get; set; }
         [Required]
-        [Column(TypeName = "Date")]
+        [Column(TypeName = "Datetime2")]
         public DateTime BirthDate { get; set; }
         [Required]
-        [MaxLength(256)]
+        [MaxLength(200)]
         public string Email { get; set; }
         [Required]
-        [Column(TypeName = "VARBINARY(50)")]
-        public byte[] Password { get; set; }
-        [Required]
-        [Column(TypeName = "CHAR(36)")]
+        //[Column(TypeName = "VARBINARY(64)")]
+        public string Password { get; set; }
+        
+        [MaxLength(100)]
         public string Salt { get; set; }
+        [Required]
         public int RoleId { get; set; }
     }
 }
