@@ -45,6 +45,8 @@ namespace test
             services.AddScoped<RarityService>();
             services.AddScoped<TypeService>();
             services.AddScoped<SousTypeService>();
+            services.AddScoped<DeckService>();
+            services.AddScoped<CardInDeckService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

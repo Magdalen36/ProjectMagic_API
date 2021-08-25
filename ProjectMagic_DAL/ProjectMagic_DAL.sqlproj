@@ -77,6 +77,8 @@
     <Build Include="StoredProc\LoginUser.sql" />
     <Build Include="View\CardView.sql" />
     <Build Include="View\CollectionView.sql" />
+    <Build Include="View\DeckView.sql" />
+    <Build Include="View\CardDeckView.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script\InsertData.sql" />
