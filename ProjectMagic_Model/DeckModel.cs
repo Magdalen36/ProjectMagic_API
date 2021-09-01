@@ -13,6 +13,7 @@ namespace ProjectMagic_Models
         public string DeckName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        //public string Color { get; set; }
+        public int ColorId { get; set; }
+        public string ColorName { get; set; }
     }
 }

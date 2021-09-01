@@ -18,7 +18,9 @@ namespace ProjectMagic_Services.Mapper
                 UserId = (int)reader["UserId"],
                 DeckName = reader["DeckName"].ToString(),
                 LastName = reader["LastName"].ToString(),
-                FirstName = reader["FirstName"].ToString()
+                FirstName = reader["FirstName"].ToString(),
+                ColorId = (int)reader["ColorId"],
+                ColorName = reader["ColorName"].ToString()
             };
         }
     }

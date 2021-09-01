@@ -46,17 +46,19 @@ namespace ProjectMagic_Services
 
         public int Insert(DeckModel entity)
         {
-            Command cmd = new Command("INSERT INTO Deck (Name, UserId) output inserted.id VALUES (@Name, @UserId)", false);
+            Command cmd = new Command("INSERT INTO Deck (Name, UserId, ColorId) output inserted.id VALUES (@Name, @UserId, @ColorId)", false);
             cmd.AddParameters("UserId", entity.UserId);
             cmd.AddParameters("Name", entity.DeckName);
+            cmd.AddParameters("ColorId", entity.ColorId);
             return (int)_connection.ExecuteScalar(cmd);
         }
 
         public void Update(DeckModel entity, int id)
         {
-            Command cmd = new Command("UPDATE Deck Set UserId=@UserId, Name=@Name WHERE id=@id", false);
+            Command cmd = new Command("UPDATE Deck Set UserId=@UserId, Name=@Name, ColorId=@ColorId WHERE id=@id", false);
             cmd.AddParameters("UserId", entity.UserId);
             cmd.AddParameters("Name", entity.DeckName);
+            cmd.AddParameters("ColorId", entity.ColorId);
             cmd.AddParameters("id", id);
             _connection.ExecuteNonQuery(cmd);
         }
